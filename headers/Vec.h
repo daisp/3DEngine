@@ -19,6 +19,10 @@ public:
 
     ~Vec3d() = default;
 
+    float dot(const Vec3d &v) const {
+        return (this->x * v.x + this->y * v.y + this->z * v.z);
+    }
+
     // some common 3D vectors
     static const Vec3d zero() { return Vec3d(0.0, 0.0, 0.0); }
 
