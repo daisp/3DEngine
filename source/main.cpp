@@ -1,4 +1,4 @@
-#include "GraphicsEngine.h"
+#include "../headers/GraphicsEngine.h"
 
 int main() {
     auto engine = GraphicsEngine();

@@ -8,6 +8,15 @@
 #include <graphics.h>
 #include <memory>
 
+// mathematical 3D float vector class (uses std::array API)
+#include "../headers/Vec3D.h"
+
+// each Triangle is composed of three Vec3D's (uses std::array API)
+#include "../headers/Triangle.h"
+
+// each mesh holds some amount of triangles
+#include "../headers/Mesh.h"
+
 using std::unique_ptr;
 using std::make_unique;
 
@@ -16,6 +25,8 @@ private:
     int *dg;
     int *gm;
     char *empty_string;
+    int screen_width;
+    int screen_height;
 
 public:
     explicit GraphicsEngine();

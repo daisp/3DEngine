@@ -2,21 +2,22 @@
 // Created by dais on 5/12/19.
 //
 
-#include "GraphicsEngine.h"
+#include <thread>
+#include <condition_variable>
+#include <mutex>
 
-GraphicsEngine::GraphicsEngine() {
+#include "../headers/GraphicsEngine.h"
+
+GraphicsEngine::GraphicsEngine() : dg(new int(DETECT)), gm(new int()), empty_string(new char(0)) {
 
     // gm is Graphics mode which is a computer display
     // mode that generates image using pixels.
-    // DETECT is a macro defined in "graphics.h" header file
-    this->dg = new int(DETECT);
-    this->gm = new int();
-
     // initgraph initializes the graphics system
     // by loading a graphics driver from disk
-    this->empty_string = new char(0);
     initgraph(this->dg, this->gm, this->empty_string);
 
+    this->screen_width = getmaxx();
+    this->screen_height = getmaxy();
 }
 
 GraphicsEngine::~GraphicsEngine() {
@@ -25,6 +26,8 @@ GraphicsEngine::~GraphicsEngine() {
     // mode and deallocates all memory allocated
     // by graphics system.
     closegraph();
+
+    // pointer member deallocation
     delete this->dg;
     delete this->gm;
     delete this->empty_string;
