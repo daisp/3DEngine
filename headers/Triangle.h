@@ -7,7 +7,7 @@
 
 #include <array>
 
-#include "Vec3D.h"
+#include "Vec.h"
 
 
 class Triangle : public std::array<Vec3d, 3> {

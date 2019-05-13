@@ -6,10 +6,12 @@
 #define INC_3DENGINE_GRAPHICSENGINE_H
 
 #include <graphics.h>
+
+// for unique_ptr
 #include <memory>
 
 // mathematical 3D float vector class (uses std::array API)
-#include "../headers/Vec3D.h"
+#include "Vec.h"
 
 // each Triangle is composed of three Vec3D's (uses std::array API)
 #include "../headers/Triangle.h"
@@ -17,23 +19,36 @@
 // each mesh holds some amount of triangles
 #include "../headers/Mesh.h"
 
+// performs the actual screen drawing
+#include "../headers/Renderer.h"
+
+
 using std::unique_ptr;
 using std::make_unique;
 
+typedef list<Mesh> Meshes;
+
 class GraphicsEngine {
-private:
-    int *dg;
-    int *gm;
-    char *empty_string;
-    int screen_width;
-    int screen_height;
-
 public:
-    explicit GraphicsEngine();
+    explicit GraphicsEngine(const int &fps = 60);
 
-    ~GraphicsEngine();
+    explicit GraphicsEngine(const Meshes &meshes, const int &fps = 60);
 
-    void DrawLine(int x1, int y1, int x2, int y2) const;
+    GraphicsEngine(const GraphicsEngine &engine) = delete;
+
+    void operator=(const GraphicsEngine &engine) = delete;
+
+    ~GraphicsEngine() = default;
+
+    void run();
+
+
+private:
+
+    unique_ptr<Meshes> meshes;
+    unique_ptr<Renderer> renderer;
+    int fps;
+
 };
 
 

@@ -5,11 +5,13 @@
 #ifndef INC_3DENGINE_MESH_H
 #define INC_3DENGINE_MESH_H
 
-#include "Vec3D.h"
+#include <list>
+
 #include "Triangle.h"
 
-class Mesh {
+using std::list;
 
+class Mesh : public list<Triangle> {
 };
 
 

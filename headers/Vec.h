@@ -2,8 +2,8 @@
 // Created by dais on 5/13/19.
 //
 
-#ifndef INC_3DENGINE_VEC3D_H
-#define INC_3DENGINE_VEC3D_H
+#ifndef INC_3DENGINE_VEC_H
+#define INC_3DENGINE_VEC_H
 
 #include <array>
 
@@ -19,7 +19,7 @@ public:
 
     ~Vec3d() = default;
 
-    // some common vectors
+    // some common 3D vectors
     static const Vec3d zero() { return Vec3d(0.0, 0.0, 0.0); }
 
     static const Vec3d up() { return Vec3d(0.0, 1.0, 0.0); }
@@ -36,4 +36,29 @@ public:
 };
 
 
-#endif //INC_3DENGINE_VEC3D_H
+class Vec2d {
+public:
+    float x, y;
+
+    explicit Vec2d() : x(0.0), y(0.0) {}
+
+    Vec2d(float x, float y) : x(x), y(y) {}
+
+    Vec2d(const Vec2d &v) = default;
+
+    ~Vec2d() = default;
+
+    // some common 2D vectors
+    static const Vec2d zero() { return Vec2d(0.0, 0.0); }
+
+    static const Vec2d up() { return Vec2d(0.0, 1.0); }
+
+    static const Vec2d down() { return Vec2d(0.0, -1.0); }
+
+    static const Vec2d left() { return Vec2d(-1.0, 0.0); }
+
+    static const Vec2d right() { return Vec2d(1.0, 0.0); }
+};
+
+
+#endif //INC_3DENGINE_VEC_H
