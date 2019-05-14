@@ -7,13 +7,10 @@
 
 #include <graphics.h>
 
-// for unique_ptr
-#include <memory>
-
 // mathematical 3D float vector class (uses std::array API)
 #include "Vec.h"
 
-// each Triangle is composed of three Vec3D's (uses std::array API)
+// each Triangle3d is composed of three Vec3D's (uses std::array API)
 #include "../headers/Triangle.h"
 
 // each mesh holds some amount of triangles
@@ -23,10 +20,6 @@
 #include "../headers/Renderer.h"
 
 
-using std::unique_ptr;
-using std::make_unique;
-
-typedef list<Mesh> Meshes;
 
 class GraphicsEngine {
 public:

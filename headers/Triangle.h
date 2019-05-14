@@ -7,10 +7,17 @@
 
 #include <array>
 
-#include "Vec.h"
+#include "Line.h"
 
+using std::array;
 
-class Triangle : public std::array<Vec3d, 3> {
+class Triangle3d : public array<Line3d, 3> {
+public:
+    explicit Triangle3d() = default;
+    Triangle3d(const Triangle3d&) = default;
+    ~Triangle3d() = default;
+
+    Triangle3d(const Line3d &line1, const Line3d &line2, const Line3d &line3);
 };
 
 

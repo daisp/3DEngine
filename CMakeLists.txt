@@ -8,6 +8,13 @@ set(CMAKE_CXX_FLAGS -pthread)
 
 add_executable(3DEngine source/main.cpp source/GraphicsEngine.cpp source/Renderer.cpp
         headers/Vec.h headers/Triangle.h source/Mesh.cpp headers/Mesh.h headers/Renderer.h headers/Line.h
-        tests/test_Renderer.cpp source/Matrix.cpp headers/Matrix.h)
+        tests/test_Renderer.cpp source/Matrix.cpp headers/Matrix.h source/Triangle.cpp tests/TestRunner.h)
 
-add_executable(test_Renderer source/Renderer.cpp tests/test_Renderer.cpp)
+# Tests
+add_executable(test_Renderer source/Renderer.cpp source/Matrix.cpp source/Mesh.cpp source/Triangle.cpp
+        tests/test_Renderer.cpp)
+add_executable(test_Vec tests/test_Vec.cpp headers/Vec.h)
+add_executable(test_Line tests/test_Line.cpp headers/Line.h)
+add_executable(test_Triangle tests/test_Triangle.cpp source/Triangle.cpp)
+add_executable(test_Mesh tests/test_Mesh.cpp source/Mesh.cpp)
+

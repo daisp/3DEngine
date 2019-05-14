@@ -6,9 +6,7 @@
 
 
 Vec3d Matrix3x3::operator*(const Vec3d &v) const {
-    Vec3d out;
-    out.x = this->data[0].dot(v);
-    out.y = this->data[1].dot(v);
-    out.z = this->data[2].dot(v);
-    return out;
+    return Vec3d(this->data[0].dot(v), this->data[1].dot(v), this->data[2].dot(v));
 }
+
+Matrix3x3::Matrix3x3(const Matrix3x3Data &data) : data(data) {}

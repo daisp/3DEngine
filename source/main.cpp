@@ -1,6 +1,6 @@
 #include "../headers/GraphicsEngine.h"
 
-int main() {
+int main(int argc, char **argv) {
     GraphicsEngine engine;
     engine.run();
 

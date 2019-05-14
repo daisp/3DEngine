@@ -13,6 +13,7 @@ void test_smoke(const Renderer &r) {
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "bugprone-integer-division"
+
 void test_simple_line_rendering(const Renderer &r) {
     Lines2d lines_to_render;
 
@@ -35,12 +36,13 @@ void test_simple_line_rendering(const Renderer &r) {
     r.renderFrame(lines_to_render);
     getch();
 }
+
 #pragma clang diagnostic pop
 
 void test_simple_animation(const Renderer &r) {
     auto animation_len = 400;
     Lines2d lines_to_render;
-    lines_to_render.push_back(Line2d(Vec2d(0,0),Vec2d(50,50)));
+    lines_to_render.push_back(Line2d(Vec2d(0, 0), Vec2d(50, 50)));
     for (auto i = 0; i < animation_len; ++i) {
         lines_to_render[0].first.x++;
         lines_to_render[0].first.y++;
@@ -51,9 +53,17 @@ void test_simple_animation(const Renderer &r) {
     }
 }
 
+void test_mesh_rendering(const Renderer& r){
+    Meshes meshes;
+    meshes.push_back(Mesh(Mesh::pyramid()));
+    r.renderFrame(meshes);
+    getch();
+}
+
 int main() {
     Renderer r;
-    test_smoke(r);
+//    test_smoke(r);
 //    test_simple_line_rendering(r);
-    test_simple_animation(r);
+//    test_simple_animation(r);
+    test_mesh_rendering(r);
 }

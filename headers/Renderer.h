@@ -5,50 +5,49 @@
 #ifndef INC_3DENGINE_RENDERER_H
 #define INC_3DENGINE_RENDERER_H
 
-// for multithreaded support
-//#include <thread>
-//#include <condition_variable>
-//#include <mutex>
-//#include <chrono>
-
 #include <graphics.h>
 #include <vector>
+// for unique_ptr
+#include <memory>
 
 #include "Line.h"
 #include "Mesh.h"
+#include "Matrix.h"
 
 using std::vector;
+using std::unique_ptr;
+using std::make_unique;
 
-
-//using std::thread;
-//using std::condition_variable;
-//using std::mutex;
-
-//typedef vector<thread> Threads;
 typedef vector<Line3d> Lines3d;
 typedef vector<Line2d> Lines2d;
 
 class Renderer {
 private:
-//    Threads renderer_threads;
-//    mutex render_lock;
-//    condition_variable render_cv;
-//    bool is_render_possible;
 
+    int *dg, *gm;
+    char *empty_str;
 
-    int *dg;
-    int *gm;
-    char *empty_string;
-
+    // projection-related members
+    unique_ptr<Matrix3x3> projection_matrix;
+    float z_near, z_far, fov_deg, fov_rad, aspect_ratio;
 
     void initializeRendererGraphics();
 
-//    void initializeRendererMultithreading();
+    Matrix3x3Data createProjectionMatrixData() const;
 
     void drawLine2d(const Line2d &line_to_draw) const;
 
+    void renderMesh(const Mesh &mesh) const;
+
+    void renderTriangle(const Triangle3d &triangle) const;
+
+    Line2d projectLine(const Line3d &original_line) const;
+
 public:
-    Renderer();
+    int screen_width;
+    int screen_height;
+
+    explicit Renderer(float z_near = 0.1, float z_far = 1000.0, float fov_deg = 100);
 
     Renderer(const Renderer &renderer) = delete;
 
@@ -58,10 +57,10 @@ public:
 
     void renderFrame(const Lines2d &lines_to_render) const;
 
+    void renderFrame(const Meshes &meshes) const;
+
     void clearScreen() const;
 
-    int screen_width{};
-    int screen_height{};
 };
 
 

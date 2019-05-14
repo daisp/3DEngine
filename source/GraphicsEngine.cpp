@@ -15,6 +15,6 @@ GraphicsEngine::GraphicsEngine(const Meshes &meshes, const int &fps) :
 
 
 void GraphicsEngine::run() {
-
+    // TODO render each frame (busy wait with delay() as a start) using this->renderer.renderFrame()
 }
 

@@ -10,18 +10,19 @@
 #include "Vec.h"
 
 using std::array;
+
 typedef array<Vec3d, 3> Matrix3x3Data;
 
 
 class Matrix3x3 {
 public:
-    Matrix3x3() = default;
+    explicit Matrix3x3(const Matrix3x3Data &data);
 
     ~Matrix3x3() = default;
 
     Matrix3x3(const Matrix3x3 &mat) = default;
 
-    Matrix3x3& operator=(const Matrix3x3 &rhs) = default;
+    Matrix3x3 &operator=(const Matrix3x3 &rhs) = default;
 
     Vec3d operator*(const Vec3d &v) const;
 
