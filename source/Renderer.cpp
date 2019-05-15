@@ -82,7 +82,7 @@ Line2d Renderer::projectLine(const Line3d &original_line) const {
                              *(this->projection_matrix) * original_line.second);
     Vec2d first_projected(projected_3d_line.first.x, projected_3d_line.first.y);
     Vec2d second_projected(projected_3d_line.second.x, projected_3d_line.second.y);
-    return Line2d(first_projected, second_projected);
+    return Line2d{first_projected, second_projected};
 }
 
 void Renderer::drawLine2d(const Line2d &line_to_draw) const {
