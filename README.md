@@ -1,2 +1,2 @@
 # 3DEngine
-My custom-made C++14 3D graphics engine using graphics.h.
+My custom-made C++14 3D graphics engine using libgraph.
