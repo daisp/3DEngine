@@ -17,6 +17,7 @@
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
+using std::tan;
 
 typedef vector<Line3d> Lines3d;
 typedef vector<Line2d> Lines2d;
@@ -29,7 +30,8 @@ private:
 
     // projection-related members
     unique_ptr<Matrix3x3> projection_matrix;
-    float z_near, z_far, fov_deg, fov_rad, aspect_ratio;
+    float z_near, z_far, fov_deg, fov_rad, aspect_ratio, f, q;
+    Vec3d camera_location;
 
     void initializeRendererGraphics();
 
@@ -47,7 +49,8 @@ public:
     int screen_width;
     int screen_height;
 
-    explicit Renderer(float z_near = 0.1, float z_far = 1000.0, float fov_deg = 100);
+    explicit Renderer(float z_near = 0.5f, float z_far = 1000.0f, float fov_deg = 100.0f,
+                      Vec3d camera_location = Vec3d(0.0f, -1.f, -4.0f));
 
     Renderer(const Renderer &renderer) = delete;
 

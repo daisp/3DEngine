@@ -7,6 +7,7 @@
 
 #include <array>
 
+
 class Vec3d {
 public:
     float x, y, z;
@@ -26,7 +27,7 @@ public:
     explicit Vec3d(const char x, const char y, const char z) = delete;
 
     bool operator==(const Vec3d &rhs) const {
-        return (this->x == rhs.x && this->y == rhs.y && this->z == rhs.z);
+        return (x == rhs.x && y == rhs.y && z == rhs.z);
     }
 
     bool operator!=(const Vec3d &rhs) const { return !(*this == rhs); }
@@ -36,7 +37,33 @@ public:
     ~Vec3d() = default;
 
     float dot(const Vec3d &v) const {
-        return (this->x * v.x + this->y * v.y + this->z * v.z);
+        return (x * v.x + y * v.y + z * v.z);
+    }
+
+    Vec3d &operator=(const Vec3d rhs) {
+        x = rhs.x;
+        y = rhs.y;
+        z = rhs.z;
+        return *this;
+    }
+
+    void operator+=(const Vec3d &rhs) {
+        x += rhs.x;
+        y += rhs.y;
+        z += rhs.z;
+    }
+
+    void operator-=(const Vec3d &rhs) {
+        x -= rhs.x;
+        y -= rhs.y;
+        z -= rhs.z;
+    }
+
+    Vec3d &operator-() {
+        x = -x;
+        y = -y;
+        z = -z;
+        return *this;
     }
 
     // some common 3D vectors

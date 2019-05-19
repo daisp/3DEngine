@@ -8,6 +8,7 @@
 #include <array>
 
 #include "Line.h"
+#include "Matrix.h"
 
 using std::array;
 
@@ -19,15 +20,15 @@ public:
 
     Triangle3d(const Line3d &line1, const Line3d &line2, const Line3d &line3);
 
-
     ~Triangle3d() = default;
 
     Triangle3d &operator=(const Triangle3d &) = default;
 
-
     bool operator==(const Triangle3d &rhs);
 
     bool operator!=(const Triangle3d &rhs);
+
+    void rotateCCWAroundYAxisRadiansInplace(const Matrix3x3 &rotation_matrix);
 
     class Triangle3dException : public std::exception {
     };
@@ -44,6 +45,7 @@ public:
     private:
         std::string message;
     };
+
 };
 
 

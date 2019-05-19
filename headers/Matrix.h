@@ -11,6 +11,7 @@
 
 using std::array;
 
+
 typedef array<Vec3d, 3> Matrix3x3Data;
 
 

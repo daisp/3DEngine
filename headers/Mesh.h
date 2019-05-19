@@ -6,11 +6,14 @@
 #define INC_3DENGINE_MESH_H
 
 #include <list>
+#include <cmath>
 
 #include "Triangle.h"
 
 
 using std::list;
+using std::sin;
+using std::cos;
 
 class Mesh : public list<Triangle3d> {
 public:
@@ -19,6 +22,8 @@ public:
     Mesh(const Mesh &original_mesh)= default;
 
     ~Mesh() = default;
+
+    void rotateCCWAroundYAxisRadiansInplace(float y_theta);
 
     static Mesh pyramid();
 };

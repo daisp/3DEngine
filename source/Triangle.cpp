@@ -4,12 +4,10 @@
 
 #include "../headers/Triangle.h"
 
-Triangle3d::Triangle3d(const Line3d &line1, const Line3d &line2, const Line3d &line3) {
+Triangle3d::Triangle3d(const Line3d &line1, const Line3d &line2, const Line3d &line3) :
+        array<Line3d, 3>{line1, line2, line3} {
     if (line1.second != line2.first || line2.second != line3.first || line3.second != line1.first)
         throw LinesDontFormTriangleException();
-    (*this)[0] = line1;
-    (*this)[1] = line2;
-    (*this)[2] = line3;
 }
 
 bool Triangle3d::operator==(const Triangle3d &rhs) {
@@ -17,5 +15,11 @@ bool Triangle3d::operator==(const Triangle3d &rhs) {
 }
 
 bool Triangle3d::operator!=(const Triangle3d &rhs) {
-    return !(*this==rhs);
+    return !(*this == rhs);
+}
+
+void Triangle3d::rotateCCWAroundYAxisRadiansInplace(const Matrix3x3 &rotation_matrix) {
+    for (auto &line : *this) {
+        line.rotateCCWAroundYAxisRadiansInplace(rotation_matrix);
+    }
 }

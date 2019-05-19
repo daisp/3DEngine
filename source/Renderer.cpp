@@ -3,15 +3,15 @@
 //
 #include "../headers/Renderer.h"
 
-using std::tan;
-
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "cppcoreguidelines-pro-type-member-init"
-Renderer::Renderer(float z_near, float z_far, float fov_deg)
+
+Renderer::Renderer(float z_near, float z_far, float fov_deg, Vec3d camera_location)
         : dg(new int(DETECT)), gm(new int()), empty_str(new char(0)), z_near(z_near), z_far(z_far),
-          fov_deg(), fov_rad(fov_deg * 0.0174533) {
+          fov_deg(), fov_rad(fov_deg * 0.0174533), camera_location(camera_location) {
     initializeRendererGraphics();
 }
+
 #pragma clang diagnostic pop
 
 
@@ -33,8 +33,10 @@ void Renderer::initializeRendererGraphics() {
 
     this->screen_width = getmaxx();
     this->screen_height = getmaxy();
-    this->aspect_ratio = static_cast<float>(this->screen_height) /
-                         static_cast<float>(this->screen_width);
+    this->aspect_ratio = static_cast<float>(screen_height) /
+                         static_cast<float>(screen_width);
+    this->f = 1 / tan(fov_rad / 2);
+    this->q = z_far / (z_far - z_near);
 
     Matrix3x3Data projection_matrix_data = this->createProjectionMatrixData();
     this->projection_matrix = make_unique<Matrix3x3>(projection_matrix_data);
@@ -42,11 +44,15 @@ void Renderer::initializeRendererGraphics() {
 
 
 Matrix3x3Data Renderer::createProjectionMatrixData() const {
+    // Mathematical explanation and meaning for variables here:
+    // https://youtu.be/ih20l3pJoeU?t=1500
+
     Matrix3x3Data data;
-    data[0].x = aspect_ratio * (1 / tan(fov_rad / 2));
-    data[1].y = 1 / tan(fov_rad / 2);
-    data[2].z = this->z_far / (this->z_far - this->z_near);
-    data[0].y = data[0].z = data[1].x = data[1].z = data[2].x = data[2].y = 0.0;
+
+    data[0].x = aspect_ratio * f;
+    data[1].y = f;
+    data[2].z = q;
+    data[0].y = data[0].z = data[1].x = data[1].z = data[2].x = data[2].y = 0.0f;
     return data;
 }
 
@@ -59,6 +65,7 @@ void Renderer::renderFrame(const Lines2d &lines_to_render) const {
 }
 
 void Renderer::renderFrame(const Meshes &meshes) const {
+    this->clearScreen();
     for (auto &cur_mesh : meshes) {
         this->renderMesh(cur_mesh);
     }
@@ -78,11 +85,53 @@ void Renderer::renderTriangle(const Triangle3d &triangle) const {
 }
 
 Line2d Renderer::projectLine(const Line3d &original_line) const {
-    Line3d projected_3d_line(*(this->projection_matrix) * original_line.first,
-                             *(this->projection_matrix) * original_line.second);
+
+    Line3d translated_original_line(original_line); // since original is const
+
+    // flip horizontally and vertically
+    translated_original_line.first = -translated_original_line.first;
+    translated_original_line.second = -translated_original_line.second;
+
+    // translate in relation to camera
+    translated_original_line.first -= camera_location;
+    translated_original_line.second -= camera_location;
+
+    Line3d projected_3d_line(*(this->projection_matrix) * translated_original_line.first,
+                             *(this->projection_matrix) * translated_original_line.second);
+    projected_3d_line.first.z -= this->z_near * this->q;
+    projected_3d_line.second.z -= this->z_near * this->q;
+
+    float first_z = projected_3d_line.first.z;
+    float second_z = projected_3d_line.second.z;
+    if (first_z != 0.0f) {
+        projected_3d_line.first.x /= first_z;
+        projected_3d_line.first.y /= first_z;
+    }
+    if (second_z != 0.0f) {
+        projected_3d_line.second.x /= second_z;
+        projected_3d_line.second.y /= second_z;
+    }
+
+
+    // scale into view
+    projected_3d_line.first.x += 1.0f;
+    projected_3d_line.first.y += 1.0f;
+    projected_3d_line.first.z += 1.0f;
+
+    projected_3d_line.second.x += 1.0f;
+    projected_3d_line.second.y += 1.0f;
+    projected_3d_line.second.z += 1.0f;
+
+    projected_3d_line.first.x *= 0.5f * screen_width;
+    projected_3d_line.first.y *= 0.5f * screen_height;
+
+    projected_3d_line.second.x *= 0.5f * screen_width;
+    projected_3d_line.second.y *= 0.5f * screen_height;
+
     Vec2d first_projected(projected_3d_line.first.x, projected_3d_line.first.y);
     Vec2d second_projected(projected_3d_line.second.x, projected_3d_line.second.y);
-    return Line2d{first_projected, second_projected};
+    return Line2d{
+            first_projected, second_projected};
 }
 
 void Renderer::drawLine2d(const Line2d &line_to_draw) const {
