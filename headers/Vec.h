@@ -25,9 +25,11 @@ public:
 
     explicit Vec3d(const char x, const char y, const char z) = delete;
 
-    bool operator==(const Vec3d &rhs) {
+    bool operator==(const Vec3d &rhs) const {
         return (this->x == rhs.x && this->y == rhs.y && this->z == rhs.z);
     }
+
+    bool operator!=(const Vec3d &rhs) const { return !(*this == rhs); }
 
     Vec3d(const Vec3d &v) = default;
 

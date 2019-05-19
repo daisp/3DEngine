@@ -49,6 +49,12 @@ endif()
 # official Google Test code ends here. 3DEngine code follows
 
 # Tests
+# Vec
 add_executable(test_Vec tests/gtest/test_Vec.cpp headers/Vec.h)
 target_link_libraries(test_Vec gtest_main)
+
+# Triangle
+add_executable(test_Triangle tests/gtest/test_Triangle.cpp source/Triangle.cpp)
+target_link_libraries(test_Triangle gtest_main)
+
 add_test(NAME example_test COMMAND example)

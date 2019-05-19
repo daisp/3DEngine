@@ -140,10 +140,14 @@ namespace {
             Vec2d v4(x1, y2);
             EXPECT_FALSE(v1 == v4);
             EXPECT_FALSE(v4 == v1);
+            EXPECT_TRUE(v1 != v4);
+            EXPECT_TRUE(v4 != v1);
 
             Vec2d v5(x2, y2);
             EXPECT_FALSE(v1 == v5);
             EXPECT_FALSE(v5 == v1);
+            EXPECT_TRUE(v1 != v5);
+            EXPECT_TRUE(v5 != v1);
         }
     }
 
@@ -256,18 +260,26 @@ namespace {
             Vec3d v2(x1, y1, z1);
             EXPECT_TRUE(v2 == v1);
             EXPECT_TRUE(v1 == v2);
+            EXPECT_FALSE(v2 != v1);
+            EXPECT_FALSE(v1 != v2);
 
             Vec3d v3(x2, y1, z1);
             EXPECT_FALSE(v1 == v3);
             EXPECT_FALSE(v3 == v1);
+            EXPECT_TRUE(v1 != v3);
+            EXPECT_TRUE(v3 != v1);
 
             Vec3d v4(x1, y2, z1);
             EXPECT_FALSE(v1 == v4);
             EXPECT_FALSE(v4 == v1);
+            EXPECT_TRUE(v1 != v4);
+            EXPECT_TRUE(v4 != v1);
 
             Vec3d v5(x1, y1, z2);
             EXPECT_FALSE(v1 == v5);
             EXPECT_FALSE(v5 == v1);
+            EXPECT_TRUE(v1 != v5);
+            EXPECT_TRUE(v5 != v1);
         }
     }
 
