@@ -1,1 +1,0 @@
-/usr/bin/c++  -pthread -g   CMakeFiles/3DEngine.dir/source/main.cpp.o CMakeFiles/3DEngine.dir/source/GraphicsEngine.cpp.o CMakeFiles/3DEngine.dir/source/Renderer.cpp.o CMakeFiles/3DEngine.dir/source/Mesh.cpp.o CMakeFiles/3DEngine.dir/source/Matrix.cpp.o CMakeFiles/3DEngine.dir/source/Triangle.cpp.o CMakeFiles/3DEngine.dir/source/Line.cpp.o  -o 3DEngine -lgraph 
