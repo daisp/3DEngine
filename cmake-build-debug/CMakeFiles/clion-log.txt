@@ -1,0 +1,15 @@
+/home/dais/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/191.7141.37/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/dais/CLionProjects/3DEngine
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/dais/CLionProjects/3DEngine/cmake-build-debug/googletest-download
+[ 11%] Performing update step for 'googletest'
+Current branch master is up to date.
+[ 22%] No configure step for 'googletest'
+[ 33%] No build step for 'googletest'
+[ 44%] No install step for 'googletest'
+[ 55%] No test step for 'googletest'
+[ 66%] Completed 'googletest'
+[100%] Built target googletest
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/dais/CLionProjects/3DEngine/cmake-build-debug
