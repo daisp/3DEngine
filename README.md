@@ -1,5 +1,5 @@
 # 3DEngine
-My custom-made C++14 3D graphics engine using libgraph.
+My custom-made C++14 3D graphics engine using libgraph on Linux.
 
 Testing performed using integrated Google Test.
 
