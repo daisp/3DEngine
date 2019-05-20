@@ -8,7 +8,8 @@
 
 Renderer::Renderer(float z_near, float z_far, float fov_deg, Vec3d camera_location)
         : dg(new int(DETECT)), gm(new int()), empty_str(new char(0)), z_near(z_near), z_far(z_far),
-          fov_deg(), fov_rad(fov_deg * 0.0174533), camera_location(camera_location) {
+          fov_deg(), fov_rad(fov_deg * 0.0174533), camera_location(camera_location),
+          lines2d_to_render(make_unique<Lines2d>()) {
     initializeRendererGraphics();
 }
 
@@ -57,47 +58,26 @@ Matrix3x3Data Renderer::createProjectionMatrixData() const {
 }
 
 
-void Renderer::renderFrame(const Lines2d &lines_to_render) const {
-    this->clearScreen();
-    for (auto &line : lines_to_render) {
-        this->drawLine2d(line);
-    }
+void Renderer::renderFrame(const Meshes &meshes) {
+    this->clearLines2dToRender();
+    this->projectMeshes(meshes);
+    this->renderProjectedLines2d();
 }
 
-void Renderer::renderFrame(const Meshes &meshes) const {
-    this->clearScreen();
-    for (auto &cur_mesh : meshes) {
-        this->renderMesh(cur_mesh);
-    }
-}
+Line2d Renderer::projectLine3d(const Line3d &line_to_project) const {
 
-void Renderer::renderMesh(const Mesh &mesh) const {
-    for (auto &cur_triangle : mesh) {
-        this->renderTriangle(cur_triangle);
-    }
-}
-
-void Renderer::renderTriangle(const Triangle3d &triangle) const {
-    for (const Line3d &line : triangle) {
-        auto projected_line = this->projectLine(line);
-        this->drawLine2d(projected_line);
-    }
-}
-
-Line2d Renderer::projectLine(const Line3d &original_line) const {
-
-    Line3d translated_original_line(original_line); // since original is const
+    Line3d translated_line(line_to_project); // making a copy since line_to_project is const
 
     // flip horizontally and vertically
-    translated_original_line.first = -translated_original_line.first;
-    translated_original_line.second = -translated_original_line.second;
+    translated_line.first = -translated_line.first;
+    translated_line.second = -translated_line.second;
 
     // translate in relation to camera
-    translated_original_line.first -= camera_location;
-    translated_original_line.second -= camera_location;
+    translated_line.first -= camera_location;
+    translated_line.second -= camera_location;
 
-    Line3d projected_3d_line(*(this->projection_matrix) * translated_original_line.first,
-                             *(this->projection_matrix) * translated_original_line.second);
+    Line3d projected_3d_line(*(this->projection_matrix) * translated_line.first,
+                             *(this->projection_matrix) * translated_line.second);
     projected_3d_line.first.z -= this->z_near * this->q;
     projected_3d_line.second.z -= this->z_near * this->q;
 
@@ -130,11 +110,11 @@ Line2d Renderer::projectLine(const Line3d &original_line) const {
 
     Vec2d first_projected(projected_3d_line.first.x, projected_3d_line.first.y);
     Vec2d second_projected(projected_3d_line.second.x, projected_3d_line.second.y);
-    return Line2d{
-            first_projected, second_projected};
+
+    return Line2d{first_projected, second_projected};
 }
 
-void Renderer::drawLine2d(const Line2d &line_to_draw) const {
+void Renderer::renderLine2d(const Line2d &line_to_draw) const {
     line(static_cast<int>(line_to_draw.first.x),
          static_cast<int >(line_to_draw.first.y),
          static_cast<int>(line_to_draw.second.x),
@@ -144,6 +124,33 @@ void Renderer::drawLine2d(const Line2d &line_to_draw) const {
 void Renderer::clearScreen() const {
     cleardevice();
 }
+
+void Renderer::projectMeshes(const Meshes &meshes_to_project) {
+    for (auto &mesh_to_project : meshes_to_project)
+        this->projectLines2dOfMesh(mesh_to_project);
+}
+
+void Renderer::projectLines2dOfMesh(const Mesh &mesh_to_project) {
+    for (auto &triangle_to_project : mesh_to_project)
+        this->projectLines2dOfTriangle3d(triangle_to_project);
+}
+
+void Renderer::projectLines2dOfTriangle3d(const Triangle3d &triangle_to_project) {
+    for (auto &line_to_project: triangle_to_project)
+        this->lines2d_to_render->push_back(this->projectLine3d(line_to_project));
+}
+
+void Renderer::renderProjectedLines2d() {
+    this->clearScreen();
+    for (auto &line_to_render : *lines2d_to_render) {
+        renderLine2d(line_to_render);
+    }
+}
+
+void Renderer::clearLines2dToRender() {
+    this->lines2d_to_render->clear();
+}
+
 
 
 

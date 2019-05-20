@@ -18,7 +18,6 @@ GraphicsEngine::GraphicsEngine(const Meshes &meshes, const int &fps) :
 
 
 void GraphicsEngine::run() {
-    meshes->push_back(Mesh::pyramid());
     while (true) {
         // TODO render each frame (busy wait with delay() as a start) using this->renderer.renderFrame()
 
@@ -28,8 +27,17 @@ void GraphicsEngine::run() {
         }
 
         renderer->renderFrame(*meshes);
-        std::this_thread::sleep_for(std::chrono::milliseconds(18));
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
 
+}
+
+void GraphicsEngine::addMesh(const Mesh &mesh_to_add) {
+    meshes->push_back(mesh_to_add);
+}
+
+void GraphicsEngine::addMultipleMeshes(const Meshes &meshes_to_add) {
+    for (auto &mesh_to_add: meshes_to_add)
+        meshes->push_back(mesh_to_add);
 }
 

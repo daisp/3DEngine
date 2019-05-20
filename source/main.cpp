@@ -1,9 +1,11 @@
 #include "../headers/GraphicsEngine.h"
 
 int main(int argc, char **argv) {
-    GraphicsEngine engine;
-    engine.run();
+    Meshes meshes;
+    meshes.push_back(Mesh::pyramid());
 
-    getch();
+    GraphicsEngine engine;
+    engine.addMultipleMeshes(meshes);
+    engine.run();
     return 0;
 }

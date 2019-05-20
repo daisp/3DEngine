@@ -20,7 +20,6 @@
 #include "../headers/Renderer.h"
 
 
-
 class GraphicsEngine {
 public:
     explicit GraphicsEngine(const int &fps = 60);
@@ -32,6 +31,10 @@ public:
     void operator=(const GraphicsEngine &engine) = delete;
 
     ~GraphicsEngine() = default;
+
+    void addMesh(const Mesh &mesh_to_add);
+
+    void addMultipleMeshes(const Meshes &meshes_to_add);
 
     void run();
 

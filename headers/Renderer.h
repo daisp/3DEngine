@@ -25,30 +25,40 @@ typedef vector<Line2d> Lines2d;
 class Renderer {
 private:
 
+    // libgraph-related members
     int *dg, *gm;
     char *empty_str;
+    int screen_width;
+    int screen_height;
 
     // projection-related members
     unique_ptr<Matrix3x3> projection_matrix;
     float z_near, z_far, fov_deg, fov_rad, aspect_ratio, f, q;
     Vec3d camera_location;
 
+    // line2d container holding the lines to render in the frame that's currently being constructed
+    unique_ptr<Lines2d> lines2d_to_render;
+
     void initializeRendererGraphics();
 
     Matrix3x3Data createProjectionMatrixData() const;
 
-    void drawLine2d(const Line2d &line_to_draw) const;
+    void clearLines2dToRender();
 
-    void renderMesh(const Mesh &mesh) const;
+    void renderLine2d(const Line2d &line_to_draw) const;
 
-    void renderTriangle(const Triangle3d &triangle) const;
+    void renderProjectedLines2d();
 
-    Line2d projectLine(const Line3d &original_line) const;
+    void projectMeshes(const Meshes &meshes_to_project);
+
+    void projectLines2dOfMesh(const Mesh &mesh_to_project);
+
+    Line2d projectLine3d(const Line3d &line_to_project) const;
+
+    void projectLines2dOfTriangle3d(const Triangle3d &triangle_to_project);
+
 
 public:
-    int screen_width;
-    int screen_height;
-
     explicit Renderer(float z_near = 0.5f, float z_far = 1000.0f, float fov_deg = 100.0f,
                       Vec3d camera_location = Vec3d(0.0f, -1.f, -4.0f));
 
@@ -58,9 +68,7 @@ public:
 
     void operator=(const Renderer &renderer) = delete;
 
-    void renderFrame(const Lines2d &lines_to_render) const;
-
-    void renderFrame(const Meshes &meshes) const;
+    void renderFrame(const Meshes &meshes);
 
     void clearScreen() const;
 
